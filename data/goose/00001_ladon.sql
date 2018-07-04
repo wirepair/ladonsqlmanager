@@ -1,5 +1,32 @@
 -- +goose Up
 -- SQL in this section is executed when the migration is applied.
+CREATE TABLE IF NOT EXISTS ladon_policy (
+    id           varchar(255) NOT NULL PRIMARY KEY,
+    description  text NOT NULL,
+    effect       text NOT NULL CHECK (effect='allow' OR effect='deny'),
+    conditions	 text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ladon_policy_subject (
+    compiled text NOT NULL,
+    template varchar(1023) NOT NULL,
+    policy   varchar(255) NOT NULL,
+    FOREIGN KEY (policy) REFERENCES ladon_policy(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ladon_policy_permission (
+    compiled text NOT NULL,
+    template varchar(1023) NOT NULL,
+    policy   varchar(255) NOT NULL,
+    FOREIGN KEY (policy) REFERENCES ladon_policy(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ladon_policy_resource (
+    compiled text NOT NULL,
+    template varchar(1023) NOT NULL,
+    policy   varchar(255) NOT NULL,
+    FOREIGN KEY (policy) REFERENCES ladon_policy(id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS ladon_subject (
     id          varchar(64) NOT NULL PRIMARY KEY,
@@ -67,3 +94,7 @@ DROP TABLE ladon_policy_subject_rel;
 DROP TABLE ladon_resource;
 DROP TABLE ladon_action;
 DROP TABLE ladon_subject;
+DROP TABLE ladon_policy;
+DROP TABLE ladon_policy_subject;
+DROP TABLE ladon_policy_permission;
+DROP TABLE ladon_policy_resource;

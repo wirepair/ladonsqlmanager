@@ -1,3 +1,31 @@
+CREATE TABLE IF NOT EXISTS ladon_policy (
+    id           varchar(255) NOT NULL PRIMARY KEY,
+    description  text NOT NULL,
+    effect       text NOT NULL CHECK (effect='allow' OR effect='deny'),
+    conditions	 text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ladon_policy_subject (
+    compiled text NOT NULL,
+    template varchar(1023) NOT NULL,
+    policy   varchar(255) NOT NULL,
+    FOREIGN KEY (policy) REFERENCES ladon_policy(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ladon_policy_permission (
+    compiled text NOT NULL,
+    template varchar(1023) NOT NULL,
+    policy   varchar(255) NOT NULL,
+    FOREIGN KEY (policy) REFERENCES ladon_policy(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ladon_policy_resource (
+    compiled text NOT NULL,
+    template varchar(1023) NOT NULL,
+    policy   varchar(255) NOT NULL,
+    FOREIGN KEY (policy) REFERENCES ladon_policy(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS ladon_subject (
     id          varchar(64) NOT NULL PRIMARY KEY,
     has_regex   bool NOT NULL,

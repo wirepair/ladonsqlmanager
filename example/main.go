@@ -24,7 +24,7 @@ func main() {
 	}
 
 	var policy = &ladon.DefaultPolicy{
-		ID:          "1",
+		ID:          "2",
 		Description: "description",
 		Subjects:    []string{"user"},
 		Effect:      ladon.AllowAccess,
